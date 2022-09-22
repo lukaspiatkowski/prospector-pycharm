@@ -161,15 +161,19 @@ public class PylintRunner {
                 Notifications.showNoPythonInterpreter(project);
             }
             return false;
-        } else if (showNotifications) {
+        }
+
+        if (!isPylintPathValid(getPylintPath(project), project)) {
             PyPackageManager pyPackageManager = PyPackageManager.getInstance(projectSdk);
             List<PyPackage> packages = pyPackageManager.getPackages();
-            if (packages != null) {
-                if (packages.stream().noneMatch(it -> PYLINT_PACKAGE_NAME.equals(it.getName()))) {
+            if (showNotifications) {
+                if (packages != null && packages.stream().noneMatch(it -> PYLINT_PACKAGE_NAME.equals(it.getName()))) {
                     Notifications.showInstallPylint(project);
-                    return false;
+                } else {
+                    Notifications.showUnableToRunPylint(project);
                 }
             }
+            return false;
         }
 
         PylintConfigService pylintConfigService = PylintConfigService.getInstance(project);
@@ -177,11 +181,7 @@ public class PylintRunner {
             throw new IllegalStateException("PylintConfigService is null");
         }
 
-        boolean isPylintPathValid = isPylintPathValid(getPylintPath(project), project);
-        if (showNotifications && !isPylintPathValid) {
-            Notifications.showUnableToRunPylint(project);
-        }
-        return isPylintPathValid;
+        return true;
     }
 
     private static String getPylintrcFile(Project project, String pylintrcPath) throws PylintPluginException {
@@ -312,9 +312,12 @@ public class PylintRunner {
     }
 
     private static GeneralCommandLine getPylintCommandLine(Project project, String pylintPath) {
+        String absolutePath = new File(pylintPath).getAbsolutePath();
         GeneralCommandLine cmd;
         VirtualFile interpreterFile = getInterpreterFile(project);
-        if (interpreterFile == null || FileTypes.isWindowsExecutable(pylintPath)) {
+        if (interpreterFile == null
+                || FileTypes.isWindowsExecutable(pylintPath)
+                || absolutePath.equals(pylintPath)) {
             cmd = new GeneralCommandLine(pylintPath);
         } else {
             cmd = new GeneralCommandLine(interpreterFile.getPath());
