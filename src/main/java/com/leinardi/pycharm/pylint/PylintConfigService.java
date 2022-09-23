@@ -24,42 +24,42 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-@State(name = "PylintConfigService", storages = {@Storage("pylint.xml")})
+@State(name = "PylintConfigService", storages = {@Storage("prospector.xml")})
 public class PylintConfigService implements PersistentStateComponent<PylintConfigService> {
     public PylintConfigService() {
-        customPylintPath = "";
-        pylintArguments = "";
-        pylintrcPath = "";
+        customProspectorPath = "";
+        prospectorArguments = "";
+        prospectorConfigPath = "";
         scanBeforeCheckin = true;
     }
 
-    private String customPylintPath;
-    private String pylintrcPath;
-    private String pylintArguments;
+    private String customProspectorPath;
+    private String prospectorConfigPath;
+    private String prospectorArguments;
     private boolean scanBeforeCheckin;
 
-    public String getCustomPylintPath() {
-        return customPylintPath;
+    public String getCustomProspectorPath() {
+        return customProspectorPath;
     }
 
-    public void setCustomPylintPath(String pathToPylint) {
-        this.customPylintPath = pathToPylint;
+    public void setCustomProspectorPath(String pathToProspector) {
+        this.customProspectorPath = pathToProspector;
     }
 
-    public String getPylintrcPath() {
-        return pylintrcPath;
+    public String getProspectorConfigPath() {
+        return prospectorConfigPath;
     }
 
-    public void setPylintrcPath(String pathToPylintrcFile) {
-        this.pylintrcPath = pathToPylintrcFile;
+    public void setProspectorConfigPath(String pathToProspectorConfigFile) {
+        this.prospectorConfigPath = pathToProspectorConfigFile;
     }
 
-    public String getPylintArguments() {
-        return pylintArguments;
+    public String getProspectorArguments() {
+        return prospectorArguments;
     }
 
-    public void setPylintArguments(String pylintArguments) {
-        this.pylintArguments = pylintArguments;
+    public void setProspectorArguments(String prospectorArguments) {
+        this.prospectorArguments = prospectorArguments;
     }
 
     public boolean isScanBeforeCheckin() {

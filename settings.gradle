@@ -14,5 +14,5 @@
  * limitations under the License.
  */
 
-rootProject.name = 'pylint-pycharm'
+rootProject.name = 'prospector-pycharm'
 

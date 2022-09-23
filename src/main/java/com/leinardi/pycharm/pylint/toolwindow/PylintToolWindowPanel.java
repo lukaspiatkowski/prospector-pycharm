@@ -78,7 +78,7 @@ import static org.apache.commons.lang.StringUtils.isBlank;
  */
 public class PylintToolWindowPanel extends JPanel implements DumbAware {
 
-    public static final String ID_TOOLWINDOW = "Pylint";
+    public static final String ID_TOOLWINDOW = "Prospector";
 
     /**
      * Logger for this class.
@@ -134,7 +134,7 @@ public class PylintToolWindowPanel extends JPanel implements DumbAware {
 
         pylintPlugin = project.getService(PylintPlugin.class);
         if (pylintPlugin == null) {
-            throw new IllegalStateException("Couldn't get pylint plugin");
+            throw new IllegalStateException("Couldn't get prospector plugin");
         }
 
         final ActionGroup mainActionGroup = (ActionGroup)

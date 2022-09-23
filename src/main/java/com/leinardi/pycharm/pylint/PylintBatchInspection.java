@@ -28,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
  * Modeled after `com.jetbrains.python.inspections.PyPep8Inspection`
  */
 public class PylintBatchInspection extends LocalInspectionTool implements ExternalAnnotatorBatchInspection {
-    public static final String INSPECTION_SHORT_NAME = "Pylint";
+    public static final String INSPECTION_SHORT_NAME = "Prospector";
 
     @Override
     public @NotNull String getShortName() {

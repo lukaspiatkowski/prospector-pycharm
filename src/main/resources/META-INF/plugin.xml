@@ -16,8 +16,8 @@
 
 <idea-plugin>
     <id>com.leinardi.pycharm.pylint</id>
-    <name>Pylint</name>
-    <vendor url="https://github.com/leinardi/pylint-pycharm">Roberto Leinardi</vendor>
+    <name>Prospector</name>
+    <vendor url="https://github.com/lukaspiatkowski/prospector-pycharm">Lukas Piatkowski</vendor>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
@@ -29,7 +29,7 @@
     <resource-bundle>com.leinardi.pycharm.pylint.PylintBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow id="Pylint"
+        <toolWindow id="Prospector"
                     anchor="bottom"
                     canCloseContents="false"
                     factoryClass="com.leinardi.pycharm.pylint.toolwindow.PylintToolWindowFactory"
@@ -45,7 +45,7 @@
                          language="Python"
                          key="inspection.display-name"
                          groupKey="inspection.group"
-                         shortName="Pylint"
+                         shortName="Prospector"
                          level="WARNING"
                          unfair="true"
                          enabledByDefault="true"/>
@@ -119,11 +119,11 @@
 
         </group>
 
-        <group id="PylintPluginActions" text="Pylint" popup="true">
+        <group id="PylintPluginActions" text="Prospector" popup="true">
             <action id="PylintCloseAction"
                     class="com.leinardi.pycharm.pylint.actions.Close"
-                    text="Close Pylint Window"
-                    description="Close the Pylint tool window"
+                    text="Close Prospector Window"
+                    description="Close the Prospector tool window"
                     icon="/actions/cancel.svg"/>
 
             <action id="PylintStopCheck"
@@ -138,7 +138,7 @@
             <action id="PylintCurrentFileAction"
                     class="com.leinardi.pycharm.pylint.actions.ScanCurrentFile"
                     text="Check Current File"
-                    description="Run Pylint on the current file in the editor"
+                    description="Run Prospector on the current file in the editor"
                     icon="/actions/execute.svg">
 
                 <add-to-group group-id="EditorPopupMenu" anchor="last"/>
@@ -147,28 +147,28 @@
             <action id="PylintModuleFilesAction"
                     class="com.leinardi.pycharm.pylint.actions.ScanModule"
                     text="Check Module"
-                    description="Run Pylint on all files in the current module"
+                    description="Run Prospector on all files in the current module"
                     icon="/nodes/ideaModule.svg">
             </action>
 
             <action id="PylintProjectFilesAction"
                     class="com.leinardi.pycharm.pylint.actions.ScanProject"
                     text="Check Project"
-                    description="Run Pylint on all files in the current project"
+                    description="Run Prospector on all files in the current project"
                     icon="/nodes/ideaProject.svg">
             </action>
 
             <action id="PylintModifiedFilesAction"
                     class="com.leinardi.pycharm.pylint.actions.ScanModifiedFiles"
                     text="Check All Modified Files"
-                    description="Run Pylint on all modified files"
+                    description="Run Prospector on all modified files"
                     icon="/actions/listChanges.svg">
             </action>
 
             <action id="PylintDefaultChangeListAction"
                     class="com.leinardi.pycharm.pylint.actions.ScanCurrentChangeList"
                     text="Check Files in the Current Change List"
-                    description="Run Pylint on the current change list"
+                    description="Run Prospector on the current change list"
                     icon="/vcs/patch.svg">
             </action>
 
@@ -176,8 +176,8 @@
 
             <action id="PylintSettingsAction"
                     class="com.leinardi.pycharm.pylint.actions.Settings"
-                    text="Open Pylint Settings"
-                    description="Open the Pylint settings window"
+                    text="Open Prospector Settings"
+                    description="Open the Prospector settings window"
                     icon="/general/gearPlain.svg"/>
 
         </group>

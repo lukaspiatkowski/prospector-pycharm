@@ -26,7 +26,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.leinardi.pycharm.pylint.PylintPlugin;
 import com.leinardi.pycharm.pylint.exception.PylintPluginException;
-import com.leinardi.pycharm.pylint.plapi.Issue;
+import com.leinardi.pycharm.pylint.plapi.JsonOutput;
 import com.leinardi.pycharm.pylint.plapi.ProcessResultsThread;
 import com.leinardi.pycharm.pylint.plapi.PylintRunner;
 import com.leinardi.pycharm.pylint.util.Notifications;
@@ -106,11 +106,11 @@ public class ScanFiles implements Callable<Map<PsiFile, List<Problem>>> {
     private Map<PsiFile, List<Problem>> scan(final List<ScannableFile> filesToScan)
             throws InterruptedIOException, InterruptedException {
         Map<String, PsiFile> fileNamesToPsiFiles = mapFilesToElements(filesToScan);
-        List<Issue> errors = PylintRunner.scan(plugin.getProject(), fileNamesToPsiFiles.keySet());
+        JsonOutput errors = PylintRunner.scan(plugin.getProject(), fileNamesToPsiFiles.keySet());
         String baseDir = plugin.getProject().getBasePath();
         int tabWidth = 4;
         final ProcessResultsThread findThread = new ProcessResultsThread(false, tabWidth, baseDir,
-                errors, fileNamesToPsiFiles);
+                errors.getIssues(), fileNamesToPsiFiles);
 
         ReadAction.run(findThread);
         return findThread.getProblems();

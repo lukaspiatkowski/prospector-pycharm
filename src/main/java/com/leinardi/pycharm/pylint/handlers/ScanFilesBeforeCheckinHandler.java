@@ -99,7 +99,7 @@ public class ScanFilesBeforeCheckinHandler extends CheckinHandler {
 
         final PylintPlugin plugin = project.getService(PylintPlugin.class);
         if (plugin == null) {
-            LOG.warn("Could not get Pylint Plug-in, skipping");
+            LOG.warn("Could not get Prospector Plug-in, skipping");
             return COMMIT;
         }
 
