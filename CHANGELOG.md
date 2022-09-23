@@ -1,3 +1,8 @@
+**[0.1.0] 2022-09-21**
+- Use Prospector in place of Pylint
+
+**Pre-Prospector (Pylint) changelog**
+
 **[0.14.0] 2022-02-26**
 - New: Improved executable auto-detection on Windows
 - New: Make plugin hot-reloadable
