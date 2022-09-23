@@ -1,3 +1,14 @@
+**[0.3.0] 2023-05-09**
+- Rebase onto Pylint 0.15.0 changes
+
+**[0.2.0] 2022-09-26**
+- Path to config to be provided as --profile (not --profile-path)
+
+**[0.1.0] 2022-09-21**
+- Use Prospector in place of Pylint
+
+**Pre-Prospector (Pylint) changelog**
+
 **[0.15.0] 2023-04-24**
 - Fixed Icons not visible in new Jetbrains UI
 - New: Min IDEA version raised from PC-2021.2 to PC-2022.1.4
