@@ -60,7 +60,7 @@ public class ScanModule extends BaseAction {
             final PylintPlugin pylintPlugin
                     = project.getService(PylintPlugin.class);
             if (pylintPlugin == null) {
-                throw new IllegalStateException("Couldn't get pylint plugin");
+                throw new IllegalStateException("Couldn't get prospector plugin");
             }
 
             toolWindow.activate(() -> {
@@ -109,7 +109,7 @@ public class ScanModule extends BaseAction {
             final PylintPlugin pylintPlugin
                     = project.getService(PylintPlugin.class);
             if (pylintPlugin == null) {
-                throw new IllegalStateException("Couldn't get pylint plugin");
+                throw new IllegalStateException("Couldn't get prospector plugin");
             }
 
             VirtualFile[] moduleFiles;

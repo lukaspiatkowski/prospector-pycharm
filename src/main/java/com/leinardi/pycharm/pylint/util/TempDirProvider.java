@@ -49,8 +49,8 @@ public class TempDirProvider {
 
     @NotNull
     private File temporaryDirectoryLocationFor(final Project project) {
-        return getIdeaFolder(project).map(vf -> new File(vf.getPath(), "pylintpylint.tmp"))
-                .orElse(new File(project.getBasePath(), "pylintpylint.tmp"));
+        return getIdeaFolder(project).map(vf -> new File(vf.getPath(), "prospectorprospector.tmp"))
+                .orElse(new File(project.getBasePath(), "prospectorprospector.tmp"));
     }
 
     Optional<VirtualFile> getIdeaFolder(@NotNull final Project pProject) {

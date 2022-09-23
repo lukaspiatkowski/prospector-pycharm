@@ -64,7 +64,7 @@ import java.util.stream.Collectors;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class PylintRunner {
-    public static final String PYLINT_PACKAGE_NAME = "pylint";
+    public static final String PYLINT_PACKAGE_NAME = "prospector";
     private static final String PYLINT_EXECUTABLE_NAME = PYLINT_PACKAGE_NAME + (OS.isWindows() ? ".exe" : "");
     private static final Logger LOG = com.intellij.openapi.diagnostic.Logger.getInstance(PylintRunner.class);
     private static final String ENV_KEY_VIRTUAL_ENV = "VIRTUAL_ENV";
@@ -83,12 +83,11 @@ public class PylintRunner {
         }
         VirtualFile pylintFile = LocalFileSystem.getInstance().findFileByPath(pylintPath);
         if (pylintFile == null || !pylintFile.exists()) {
-            LOG.warn("Error while checking Pylint path " + pylintPath + ": null or not exists");
+            LOG.warn("Error while checking Prospector path " + pylintPath + ": null or not exists");
             return false;
         }
         GeneralCommandLine cmd = getPylintCommandLine(project, pylintPath);
-        cmd.addParameter("--help-msg");
-        cmd.addParameter("E1101");
+        cmd.addParameter("--version");
         final Process process;
         try {
             process = cmd.createProcess();
@@ -97,23 +96,23 @@ public class PylintRunner {
                     .lines().collect(Collectors.joining("\n"));
             if (!StringUtil.isEmpty(error)) {
                 LOG.info("Command Line string: " + cmd.getCommandLineString());
-                LOG.warn("Messages while checking Pylint path: " + error);
+                LOG.warn("Messages while checking Prospector path: " + error);
             }
             String output = new BufferedReader(new InputStreamReader(process.getInputStream(), UTF_8))
                     .lines().collect(Collectors.joining("\n"));
             if (!StringUtil.isEmpty(output)) {
-                LOG.debug("Pylint path check output: " + output);
+                LOG.debug("Prospector path check output: " + output);
             }
-            if (process.exitValue() != 0) {
+            if (process.exitValue() != 0 || !output.startsWith("prospector")) {
                 LOG.info("Command Line string: " + cmd.getCommandLineString());
-                LOG.warn("Pylint path check process.exitValue: " + process.exitValue());
+                LOG.warn("Prospector path check process.exitValue: " + process.exitValue());
                 return false;
             } else {
                 return true;
             }
         } catch (ExecutionException | InterruptedException e) {
             LOG.info("Command Line string: " + cmd.getCommandLineString());
-            LOG.warn("Error while checking Pylint path", e);
+            LOG.warn("Error while checking Prospector path", e);
             return false;
         }
     }
@@ -129,7 +128,7 @@ public class PylintRunner {
                 throw new IllegalStateException("PylintConfigService is null");
             }
 
-            String pylintPath = pylintConfigService.getCustomPylintPath();
+            String pylintPath = pylintConfigService.getCustomProspectorPath();
             if (!pylintPath.isEmpty()) {
                 return pylintPath;
             }
@@ -194,7 +193,7 @@ public class PylintRunner {
 
         VirtualFile pylintrcFile = LocalFileSystem.getInstance().findFileByPath(pylintrcPath);
         if (pylintrcFile == null || !pylintrcFile.exists()) {
-            throw new PylintPluginException("pylintrc file is not valid. File does not exist or can't be read.");
+            throw new PylintPluginException(".prospector.yaml file is not valid. File does not exist or can't be read.");
         }
 
         return pylintrcPath;
@@ -215,24 +214,24 @@ public class PylintRunner {
                     .lines().collect(Collectors.joining("\n"));
             if (!StringUtil.isEmpty(error)) {
                 LOG.info("Command Line string: " + cmd.getCommandLineString());
-                LOG.info("Messages while checking Pylint path: " + error);
+                LOG.info("Messages while checking Prospector path: " + error);
             }
             if (process.exitValue() != 0 || !path.isPresent()) {
                 LOG.info("Command Line string: " + cmd.getCommandLineString());
-                LOG.warn("Pylint path detect process.exitValue: " + process.exitValue());
+                LOG.warn("Prospector path detect process.exitValue: " + process.exitValue());
                 return "";
             }
-            LOG.info("Detected Pylint path: " + path.get());
+            LOG.info("Detected Prospector path: " + path.get());
             return path.get();
         } catch (ExecutionException | InterruptedException e) {
             return "";
         }
     }
 
-    public static List<Issue> scan(Project project, Set<String> filesToScan) throws InterruptedIOException,
+    public static JsonOutput scan(Project project, Set<String> filesToScan) throws InterruptedIOException,
             InterruptedException {
         if (!checkPylintAvailable(project, true)) {
-            return Collections.emptyList();
+            return new JsonOutput();
         }
         PylintConfigService pylintConfigService = PylintConfigService.getInstance(project);
         if (filesToScan.isEmpty()) {
@@ -244,26 +243,26 @@ public class PylintRunner {
 
         String pylintPath = getPylintPath(project);
         if (pylintPath.isEmpty()) {
-            throw new PylintToolException("Path to Pylint executable not set (check Plugin Settings)");
+            throw new PylintToolException("Path to Prospector executable not set (check Plugin Settings)");
         }
 
-        String pylintrcPath = getPylintrcFile(project, pylintConfigService.getPylintrcPath());
+        String pylintrcPath = getPylintrcFile(project, pylintConfigService.getProspectorConfigPath());
 
         GeneralCommandLine cmd = getPylintCommandLine(project, pylintPath);
 
         cmd.setCharset(Charset.forName("UTF-8"));
-        cmd.addParameter("-f");
+        cmd.addParameter("-o");
         cmd.addParameter("json");
 
         injectEnvironmentVariables(project, cmd);
 
         if (!pylintrcPath.isEmpty()) {
-            cmd.addParameter("--rcfile");
+            cmd.addParameter("--profile-path");
             cmd.addParameter(pylintrcPath);
         }
 
         ParametersList parametersList = cmd.getParametersList();
-        parametersList.addParametersString(pylintConfigService.getPylintArguments());
+        parametersList.addParametersString(pylintConfigService.getProspectorArguments());
 
         for (String file : filesToScan) {
             cmd.addParameter(file);
@@ -275,15 +274,14 @@ public class PylintRunner {
         try {
             process = cmd.createProcess();
             Moshi moshi = new Moshi.Builder().build();
-            Type type = Types.newParameterizedType(List.class, Issue.class);
-            JsonAdapter<List<Issue>> adapter = moshi.adapter(type);
+            JsonAdapter<JsonOutput> adapter = moshi.adapter(JsonOutput.class);
             InputStream inputStream = process.getInputStream();
             assert (inputStream != null);
-            List<Issue> issues;
+            JsonOutput jsonOutput;
             if (checkIfInputStreamIsEmpty(inputStream)) {
-                issues = new ArrayList<>();
+                jsonOutput = new JsonOutput();
             } else {
-                issues = adapter.fromJson(Okio.buffer(Okio.source(inputStream)));
+                jsonOutput = adapter.fromJson(Okio.buffer(Okio.source(inputStream)));
             }
             process.waitFor();
 
@@ -296,9 +294,9 @@ public class PylintRunner {
                         .lines().collect(Collectors.joining("\n"));
 
                 Notifications.showPylintAbnormalExit(project, detail);
-                throw new PylintToolException("Pylint failed with code " + exitCode);
+                throw new PylintToolException("Prospector failed with code " + exitCode);
             }
-            return issues;
+            return jsonOutput;
         } catch (InterruptedIOException e) {
             LOG.info("Command Line string: " + cmd.getCommandLineString());
             throw e;
@@ -307,7 +305,7 @@ public class PylintRunner {
             throw new PylintPluginParseException(e.getMessage(), e);
         } catch (ExecutionException e) {
             LOG.info("Command Line string: " + cmd.getCommandLineString());
-            throw new PylintToolException("Error creating Pylint process", e);
+            throw new PylintToolException("Error creating Prospector process", e);
         }
     }
 

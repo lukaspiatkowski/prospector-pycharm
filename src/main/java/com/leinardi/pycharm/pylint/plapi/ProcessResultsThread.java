@@ -85,7 +85,7 @@ public class ProcessResultsThread implements Runnable {
         for (final Issue event : errors) {
             final PsiFile psiFile = fileNamesToPsiFiles.get(filenameFrom(event));
             if (psiFile == null) {
-                LOG.info("Could not find mapping for file: " + event.getPath() + " in " + fileNamesToPsiFiles);
+                LOG.info("Could not find mapping for file: " + event.getLocation().getPath() + " in " + fileNamesToPsiFiles);
                 return;
             }
 
@@ -104,11 +104,11 @@ public class ProcessResultsThread implements Runnable {
     }
 
     private String filenameFrom(final Issue issue) {
-        String path = normalisePath(withTrailingSeparator(baseDir) + issue.getPath());
+        String path = normalisePath(withTrailingSeparator(baseDir) + issue.getLocation().getPath());
         if (new File(path).exists()) {
             return path;
         } else {
-            return normalisePath(issue.getPath());
+            return normalisePath(issue.getLocation().getPath());
         }
     }
 
@@ -139,8 +139,8 @@ public class ProcessResultsThread implements Runnable {
             addProblemTo(victim, psiFile, event, position.afterEndOfLine);
         } else {
             addProblemTo(psiFile, psiFile, event, false);
-            LOG.debug("Couldn't find victim for error: " + event.getPath() + "(" + event.getLine() + ":"
-                    + event.getColumn() + ") " + event.getMessage());
+            LOG.debug("Couldn't find victim for error: " + event.getLocation().getPath() + "(" + event.getLocation().getLine() + ":"
+                    + event.getLocation().getCharacter() + ") " + event.getCode() + " - " + event.getMessage());
         }
     }
 
@@ -152,12 +152,12 @@ public class ProcessResultsThread implements Runnable {
             addProblem(psiFile,
                     new Problem(
                             victim,
-                            issue.getMessage(),
-                            issue.getMessageId(),
-                            issue.getSeverityLevel(),
-                            issue.getLine(),
-                            issue.getColumn(),
-                            issue.getSymbol(),
+                            issue.getSource() + "[" + issue.getCode() + "] " + issue.getMessage(),
+                            issue.getSource() + "[" + issue.getCode() + "]",
+                            SeverityLevel.ERROR,
+                            issue.getLocation().getLine(),
+                            issue.getLocation().getCharacter(),
+                            issue.getLocation().getFunction(),
                             afterEndOfLine,
                             suppressErrors));
         } catch (PsiInvalidElementAccessException e) {
@@ -176,10 +176,10 @@ public class ProcessResultsThread implements Runnable {
 
     @NotNull
     private Position findPosition(final List<Integer> lineLengthCache, final Issue event, final char[] text) {
-        if (event.getLine() == 0) {
-            return Position.at(event.getColumn());
-        } else if (event.getLine() <= lineLengthCache.size()) {
-            return Position.at(lineLengthCache.get(event.getLine() - 1) + event.getColumn());
+        if (event.getLocation().getLine() == 0) {
+            return Position.at(event.getLocation().getCharacter());
+        } else if (event.getLocation().getLine() <= lineLengthCache.size()) {
+            return Position.at(lineLengthCache.get(event.getLocation().getLine() - 1) + event.getLocation().getCharacter());
         } else {
             return searchFromEndOfCachedData(lineLengthCache, event, text);
         }
@@ -215,7 +215,7 @@ public class ProcessResultsThread implements Runnable {
                 ++offset;
             }
 
-            if (event.getLine() == line && event.getColumn() == column) {
+            if (event.getLocation().getLine() == line && event.getLocation().getCharacter() == column) {
                 if (column == 0 && Character.isWhitespace(nextChar)) {
                     afterEndOfLine = true;
                 }

@@ -48,7 +48,7 @@ public class PylintConfigPanel {
             throw new IllegalStateException("PylintConfigService is null");
         }
         testButton.setAction(new TestAction());
-        pylintPathField.setText(pylintConfigService.getCustomPylintPath());
+        pylintPathField.setText(pylintConfigService.getCustomProspectorPath());
         FileChooserDescriptor fileChooserDescriptor = new FileChooserDescriptor(
                 true, false, false, false, false, false);
         pylintPathField.addBrowseFolderListener(
@@ -57,14 +57,14 @@ public class PylintConfigPanel {
                 null,
                 fileChooserDescriptor,
                 TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT);
-        pylintrcPathField.setText(pylintConfigService.getPylintrcPath());
+        pylintrcPathField.setText(pylintConfigService.getProspectorConfigPath());
         pylintrcPathField.addBrowseFolderListener(
                 "",
                 PylintBundle.message("config.pylintrc.path.tooltip"),
                 null,
                 fileChooserDescriptor,
                 TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT);
-        argumentsField.setText(pylintConfigService.getPylintArguments());
+        argumentsField.setText(pylintConfigService.getProspectorArguments());
         argumentsField.getEmptyText().setText(PylintBundle.message("config.optional"));
     }
 

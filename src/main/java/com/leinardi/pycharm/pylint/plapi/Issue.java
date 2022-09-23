@@ -27,79 +27,37 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class Issue {
 
-    @Json(name = "type")
-    private SeverityLevel severityLevel;
-    @Json(name = "module")
-    private String module;
-    @Json(name = "obj")
-    private String obj;
-    @Json(name = "line")
-    private int line;
-    @Json(name = "column")
-    private int column;
-    @Json(name = "path")
-    private String path;
-    @Json(name = "symbol")
-    private String symbol;
+    @Json(name = "source")
+    private String source;
+    @Json(name = "code")
+    private String code;
+    @Json(name = "location")
+    private Location location;
     @Json(name = "message")
     private String message;
-    @Json(name = "message-id")
-    private String messageId;
 
-    public SeverityLevel getSeverityLevel() {
-        return severityLevel;
+    public String getSource() {
+        return source;
     }
 
-    public void setSeverityLevel(SeverityLevel severityLevel) {
-        this.severityLevel = severityLevel;
+    public void setSource(String source) {
+        this.source = source;
     }
 
-    public String getModule() {
-        return module;
+    public String getCode() {
+        return code;
     }
 
-    public void setModule(String module) {
-        this.module = module;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    public String getObj() {
-        return obj;
+    public Location getLocation() {
+        return location;
     }
 
-    public void setObj(String obj) {
-        this.obj = obj;
-    }
-
-    public int getLine() {
-        return line;
-    }
-
-    public void setLine(int line) {
-        this.line = line;
-    }
-
-    public int getColumn() {
-        return column;
-    }
-
-    public void setColumn(int column) {
-        this.column = column;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    public String getSymbol() {
-        return symbol;
-    }
-
-    public void setSymbol(String symbol) {
-        this.symbol = symbol;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public String getMessage() {
@@ -110,40 +68,22 @@ public class Issue {
         this.message = message;
     }
 
-    public String getMessageId() {
-        return messageId;
-    }
-
-    public void setMessageId(String messageId) {
-        this.messageId = messageId;
-    }
-
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("type", severityLevel)
-                .append("module", module)
-                .append("obj", obj)
-                .append("line", line)
-                .append("column", column)
-                .append("path", path)
-                .append("symbol", symbol)
-                .append("message", message)
-                .append("messageId", messageId).toString();
+                .append("source", source)
+                .append("code", code)
+                .append("location", location)
+                .append("message", message).toString();
     }
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder()
+                .append(source)
+                .append(code)
+                .append(location)
                 .append(message)
-                .append(module)
-                .append(symbol)
-                .append(path)
-                .append(column)
-                .append(line)
-                .append(obj)
-                .append(messageId)
-                .append(severityLevel)
                 .toHashCode();
     }
 
@@ -157,15 +97,10 @@ public class Issue {
         }
         Issue rhs = ((Issue) other);
         return new EqualsBuilder()
+                .append(source, rhs.source)
+                .append(code, rhs.code)
+                .append(location, rhs.location)
                 .append(message, rhs.message)
-                .append(module, rhs.module)
-                .append(symbol, rhs.symbol)
-                .append(path, rhs.path)
-                .append(column, rhs.column)
-                .append(line, rhs.line)
-                .append(obj, rhs.obj)
-                .append(messageId, rhs.messageId)
-                .append(severityLevel, rhs.severityLevel)
                 .isEquals();
     }
 

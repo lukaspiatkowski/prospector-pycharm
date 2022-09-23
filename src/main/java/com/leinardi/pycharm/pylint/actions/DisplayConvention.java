@@ -41,7 +41,7 @@ public class DisplayConvention extends ToggleAction {
         final PylintPlugin pylintPlugin
                 = project.getService(PylintPlugin.class);
         if (pylintPlugin == null) {
-            throw new IllegalStateException("Couldn't get pylint plugin");
+            throw new IllegalStateException("Couldn't get prospector plugin");
         }
 
         final ToolWindow toolWindow = ToolWindowManager.getInstance(
@@ -65,7 +65,7 @@ public class DisplayConvention extends ToggleAction {
         final PylintPlugin pylintPlugin
                 = project.getService(PylintPlugin.class);
         if (pylintPlugin == null) {
-            throw new IllegalStateException("Couldn't get pylint plugin");
+            throw new IllegalStateException("Couldn't get prospector plugin");
         }
 
         final ToolWindow toolWindow = ToolWindowManager.getInstance(

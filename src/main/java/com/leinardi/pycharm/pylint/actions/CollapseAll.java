@@ -40,7 +40,7 @@ public class CollapseAll extends BaseAction {
         final PylintPlugin pylintPlugin
                 = project.getService(PylintPlugin.class);
         if (pylintPlugin == null) {
-            throw new IllegalStateException("Couldn't get pylint plugin");
+            throw new IllegalStateException("Couldn't get prospector plugin");
         }
 
         final ToolWindow toolWindow = ToolWindowManager.getInstance(

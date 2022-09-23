@@ -61,7 +61,7 @@ public abstract class BaseAction extends AnAction {
 
             final PylintPlugin pylintPlugin = project.getService(PylintPlugin.class);
             if (pylintPlugin == null) {
-                throw new IllegalStateException("Couldn't get pylint plugin");
+                throw new IllegalStateException("Couldn't get prospector plugin");
             }
 
             // check if tool window is registered

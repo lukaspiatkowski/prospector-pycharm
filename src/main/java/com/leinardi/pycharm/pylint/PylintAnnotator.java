@@ -68,7 +68,7 @@ public class PylintAnnotator extends ExternalAnnotator<PylintAnnotator.State, Py
     private PylintPlugin plugin(final Project project) {
         final PylintPlugin pylintPlugin = project.getService(PylintPlugin.class);
         if (pylintPlugin == null) {
-            throw new IllegalStateException("Couldn't get pylint plugin");
+            throw new IllegalStateException("Couldn't get prospector plugin");
         }
         return pylintPlugin;
     }
@@ -84,7 +84,7 @@ public class PylintAnnotator extends ExternalAnnotator<PylintAnnotator.State, Py
     @Nullable
     @Override
     public State collectInformation(@NotNull PsiFile file) {
-        LOG.debug("Pylint collectInformation " + file.getName()
+        LOG.debug("Prospector collectInformation " + file.getName()
                 + " modified=" + file.getModificationStamp()
                 + " thread=" + Thread.currentThread().getName()
         );
@@ -101,7 +101,7 @@ public class PylintAnnotator extends ExternalAnnotator<PylintAnnotator.State, Py
         long startTime = System.currentTimeMillis();
 
         if (!PylintRunner.checkPylintAvailable(plugin.getProject())) {
-            LOG.debug("Scan failed: Pylint not available.");
+            LOG.debug("Scan failed: Prospector not available.");
             return NO_PROBLEMS_FOUND;
         }
 
@@ -120,7 +120,7 @@ public class PylintAnnotator extends ExternalAnnotator<PylintAnnotator.State, Py
             }
 
             long duration = System.currentTimeMillis() - startTime;
-            LOG.debug("Pylint scan completed: " + psiFile.getName() + " in " + duration + " ms");
+            LOG.debug("Prospector scan completed: " + psiFile.getName() + " in " + duration + " ms");
             return new Results(map.get(psiFile));
 
         } catch (ProcessCanceledException | AssertionError e) {
@@ -170,7 +170,7 @@ public class PylintAnnotator extends ExternalAnnotator<PylintAnnotator.State, Py
             showWarning(project, message("pylint.file-io-failed"));
 
         } else {
-            LOG.warn("Pylint threw an exception when scanning: " + psiFile.getName(), e);
+            LOG.warn("Prospector threw an exception when scanning: " + psiFile.getName(), e);
             showException(project, e);
         }
     }

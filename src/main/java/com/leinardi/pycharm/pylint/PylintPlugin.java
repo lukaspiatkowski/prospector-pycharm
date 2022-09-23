@@ -59,7 +59,7 @@ public final class PylintPlugin {
     public PylintPlugin(@NotNull final Project project) {
         this.project = project;
 
-        LOG.info("Pylint Plugin loaded with project base dir: \"" + getProjectPath() + "\"");
+        LOG.info("Prospector Plugin loaded with project base dir: \"" + getProjectPath() + "\"");
 
     }
 
