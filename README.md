@@ -1,9 +1,9 @@
 # prospector-pycharm
 
-[![GitHub (pre-)release](https://img.shields.io/github/release/lukaspiatkowski/prospector-pycharm/g/all.svg?style=plastic)](https://github.com/lukaspiatkowski/prospector-pycharm/g/releases)
-[![Travis](https://img.shields.io/travis/lukaspiatkowski/prospector-pycharm/g/master.svg?style=plastic)](https://travis-ci.org/lukaspiatkowski/prospector-pycharm/g)
-[![GitHub license](https://img.shields.io/github/license/lukaspiatkowski/prospector-pycharm/g.svg?style=plastic)](https://github.com/lukaspiatkowski/prospector-pycharm/g/blob/master/LICENSE)
-[![Stars](https://img.shields.io/github/stars/lukaspiatkowski/prospector-pycharm/g.svg?style=social&label=Stars)](https://github.com/lukaspiatkowski/prospector-pycharm/g/stargazers)
+[![GitHub (pre-)release](https://img.shields.io/github/release/lukaspiatkowski/prospector-pycharm/all.svg?style=plastic)](https://github.com/lukaspiatkowski/prospector-pycharm/releases)
+[![Travis](https://img.shields.io/travis/lukaspiatkowski/prospector-pycharm/master.svg?style=plastic)](https://travis-ci.org/lukaspiatkowski/prospector-pycharm)
+[![GitHub license](https://img.shields.io/github/license/lukaspiatkowski/prospector-pycharm.svg?style=plastic)](https://github.com/lukaspiatkowski/prospector-pycharm/blob/master/LICENSE)
+[![Stars](https://img.shields.io/github/stars/lukaspiatkowski/prospector-pycharm.svg?style=social&label=Stars)](https://github.com/lukaspiatkowski/prospector-pycharm/stargazers)
 
 This plugin provides both real-time and on-demand scanning of Python files with Prospector from within PyCharm/IDEA.
 
@@ -12,7 +12,7 @@ This plugin provides both real-time and on-demand scanning of Python files with 
 Prospector is a tool to analyse Python code and output information about errors, potential problems, convention violations and complexity.
 It brings together the functionality of other Python analysis tools such as Pylint, pycodestyle, McCabe complexity and more.
 
-![prospector plugin screenshot](https://github.com/lukaspiatkowski/prospector-pycharm/g/blob/master/art/prospector-pycharm.png)
+![prospector plugin screenshot](https://github.com/lukaspiatkowski/prospector-pycharm/blob/master/art/prospector-pycharm.png)
 
 ## Installation steps
 
@@ -36,7 +36,7 @@ the Browse button to open a file selection dialog.
 Once you changed the path you should press the Test button to check if the plugin is able to run
 the executable.
 
-![plugin settings screenshot](https://github.com/lukaspiatkowski/prospector-pycharm/g/blob/master/art/prospector-settings.png)
+![plugin settings screenshot](https://github.com/lukaspiatkowski/prospector-pycharm/blob/master/art/prospector-settings.png)
 
 ### Real-time inspection disabled by default
 
@@ -51,12 +51,12 @@ a negative impact on their system performance. If you like to try enabling the a
 By default, Prospector message severity is set to Warning. It is possible to change the severity level
 by going to **Settings/Preferences** dialog (<kbd>CTRL</kbd>+<kbd>Alt</kbd>+<kbd>S</kbd>) -> **Editor** -> **Inspections** -> **Prospector** -> **Severity**:
 
-![plugin inspection severity screenshot](https://github.com/lukaspiatkowski/prospector-pycharm/g/blob/master/art/prospector-inspection-severity.png)
+![plugin inspection severity screenshot](https://github.com/lukaspiatkowski/prospector-pycharm/blob/master/art/prospector-inspection-severity.png)
 
 ## Usage
 
-![plugin actions screenshot](https://github.com/lukaspiatkowski/prospector-pycharm/g/blob/master/art/actions1.png)
-![plugin actions screenshot](https://github.com/lukaspiatkowski/prospector-pycharm/g/blob/master/art/actions2.png)
+![plugin actions screenshot](https://github.com/lukaspiatkowski/prospector-pycharm/blob/master/art/actions1.png)
+![plugin actions screenshot](https://github.com/lukaspiatkowski/prospector-pycharm/blob/master/art/actions2.png)
 
 ## FAQ
 
@@ -74,7 +74,7 @@ More info [here](https://www.jetbrains.com/help/pycharm/configuring-folders-with
 
 This plugin officially supports only PyCharm, but it should work also on IntelliJ IDEA
 if you have the [Python Community Edition](https://plugins.jetbrains.com/plugin/7322-python-community-edition)
-plugin installed. If it does not work, feel free to open a bug on the [issue tracker](https://github.com/lukaspiatkowski/prospector-pycharm/g/issues).
+plugin installed. If it does not work, feel free to open a bug on the [issue tracker](https://github.com/lukaspiatkowski/prospector-pycharm/issues).
 
 ### I like this plugin, how can I support it?
 
@@ -95,12 +95,12 @@ A huge thanks:
 
 - to the project [CheckStyle-IDEA](https://github.com/jshiell/checkstyle-idea),
   which code and architecture I have heavily used when developing this plugin.
-- to @intgr, for [the contribution to this project](https://github.com/lukaspiatkowski/prospector-pycharm/g/pulls?q=is%3Apr+author%3Aintgr) and to [mypy-pycharm](https://github.com/leinardi/mypy-pycharm/pulls?q=is%3Apr+author%3Aintgr)
+- to @intgr, for [the contribution to this project](https://github.com/leinardi/pylint-pycharm/pulls?q=is%3Apr+author%3Aintgr) and to [mypy-pycharm](https://github.com/leinardi/mypy-pycharm/pulls?q=is%3Apr+author%3Aintgr)
 
 ## License
 
 ```
-Copyright 2022 Lukas Piatkowski.
+Copyright 2022 Lukasz Piatkowski.
 
 Licensed to the Apache Software Foundation (ASF) under one or more contributor
 license agreements.  See the NOTICE file distributed with this work for
