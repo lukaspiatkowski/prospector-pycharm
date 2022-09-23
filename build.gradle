@@ -49,7 +49,7 @@ checkstyle {
 
 def hasPycharmPath = project.hasProperty('pycharmPath')
 def props = new Properties()
-rootProject.file('src/main/resources/com/leinardi/pycharm/pylint/PylintBundle.properties')
+rootProject.file('src/main/resources/com/lukaspiatkowski/pycharm/pylint/PylintBundle.properties')
         .withInputStream {
             props.load(it)
         }
@@ -60,7 +60,7 @@ gradle.projectsEvaluated {
     }
 }
 
-group 'com.leinardi.pycharm'
+group 'com.lukaspiatkowski.pycharm'
 version version
 
 sourceCompatibility = JavaVersion.VERSION_1_8
@@ -78,7 +78,7 @@ intellij {
 }
 
 runIde {
-    systemProperties.put("idea.log.debug.categories", "#com.leinardi.pycharm.mypy")
+    systemProperties.put("idea.log.debug.categories", "#com.lukaspiatkowski.pycharm.mypy")
     // Log verbose information when dynamic plugin unloading fails
     systemProperties.put("ide.plugins.snapshot.on.unload.fail", "true")
 }

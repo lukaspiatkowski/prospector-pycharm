@@ -15,7 +15,7 @@
   -->
 
 <idea-plugin>
-    <id>com.leinardi.pycharm.pylint</id>
+    <id>com.lukaspiatkowski.pycharm.pylint</id>
     <name>Prospector</name>
     <vendor url="https://github.com/lukaspiatkowski/prospector-pycharm">Lukas Piatkowski</vendor>
 
@@ -26,22 +26,22 @@
     <!--suppress PluginXmlValidity -->
     <depends>com.intellij.modules.python</depends>
 
-    <resource-bundle>com.leinardi.pycharm.pylint.PylintBundle</resource-bundle>
+    <resource-bundle>com.lukaspiatkowski.pycharm.pylint.PylintBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow id="Prospector"
                     anchor="bottom"
                     canCloseContents="false"
-                    factoryClass="com.leinardi.pycharm.pylint.toolwindow.PylintToolWindowFactory"
-                    icon="/com/leinardi/pycharm/pylint/images/pylint.png"/>
+                    factoryClass="com.lukaspiatkowski.pycharm.pylint.toolwindow.PylintToolWindowFactory"
+                    icon="/com/lukaspiatkowski/pycharm/pylint/images/pylint.png"/>
 
-        <projectService serviceImplementation="com.leinardi.pycharm.pylint.PylintConfigService"/>
+        <projectService serviceImplementation="com.lukaspiatkowski.pycharm.pylint.PylintConfigService"/>
 
-        <projectConfigurable instance="com.leinardi.pycharm.pylint.PylintConfigurable"/>
+        <projectConfigurable instance="com.lukaspiatkowski.pycharm.pylint.PylintConfigurable"/>
 
-        <externalAnnotator language="Python" implementationClass="com.leinardi.pycharm.pylint.PylintAnnotator"/>
+        <externalAnnotator language="Python" implementationClass="com.lukaspiatkowski.pycharm.pylint.PylintAnnotator"/>
 
-        <localInspection implementationClass="com.leinardi.pycharm.pylint.PylintBatchInspection"
+        <localInspection implementationClass="com.lukaspiatkowski.pycharm.pylint.PylintBatchInspection"
                          language="Python"
                          key="inspection.display-name"
                          groupKey="inspection.group"
@@ -51,7 +51,7 @@
                          enabledByDefault="true"/>
 
         <checkinHandlerFactory id="CheckStyleIDEACheckInHandlerFactory"
-                               implementation="com.leinardi.pycharm.pylint.handlers.ScanFilesBeforeCheckinHandlerFactory"/>
+                               implementation="com.lukaspiatkowski.pycharm.pylint.handlers.ScanFilesBeforeCheckinHandlerFactory"/>
         <notificationGroup id="alerts" displayType="BALLOON" key="plugin.notification.alerts"/>
         <notificationGroup id="logging" displayType="NONE" key="plugin.notification.logging"/>
     </extensions>
@@ -60,19 +60,19 @@
 
         <group id="PylintPluginTreeActions" text="Filter" popup="true">
             <action id="PylintScrollToSourceAction"
-                    class="com.leinardi.pycharm.pylint.actions.ScrollToSource"
+                    class="com.lukaspiatkowski.pycharm.pylint.actions.ScrollToSource"
                     text="Autoscroll to Source"
                     description="Auto-scroll to the source location of errors and warnings"
                     icon="/general/autoscrollToSource.png"/>
 
             <action id="PylintExpandAllAction"
-                    class="com.leinardi.pycharm.pylint.actions.ExpandAll"
+                    class="com.lukaspiatkowski.pycharm.pylint.actions.ExpandAll"
                     text="Expand All"
                     description="Expand all elements in the tool window"
                     icon="/actions/expandall.png"/>
 
             <action id="PylintCollapseAllAction"
-                    class="com.leinardi.pycharm.pylint.actions.CollapseAll"
+                    class="com.lukaspiatkowski.pycharm.pylint.actions.CollapseAll"
                     text="Collapse All"
                     description="Collapse all elements in the tool window"
                     icon="/actions/collapseall.png"/>
@@ -80,31 +80,31 @@
             <separator/>
 
             <action id="PylintDisplayErrorsAction"
-                    class="com.leinardi.pycharm.pylint.actions.DisplayErrors"
+                    class="com.lukaspiatkowski.pycharm.pylint.actions.DisplayErrors"
                     text="Display Errors"
                     description="Display error results"
                     icon="/general/error.png"/>
 
             <action id="PylintDisplayWarningsAction"
-                    class="com.leinardi.pycharm.pylint.actions.DisplayWarnings"
+                    class="com.lukaspiatkowski.pycharm.pylint.actions.DisplayWarnings"
                     text="Display Warnings"
                     description="Display warning results"
                     icon="/general/warning.png"/>
 
             <action id="PylintDisplayConventionAction"
-                    class="com.leinardi.pycharm.pylint.actions.DisplayConvention"
+                    class="com.lukaspiatkowski.pycharm.pylint.actions.DisplayConvention"
                     text="Display Convention"
                     description="Display Convention results"
                     icon="/nodes/class.png"/>
 
             <action id="PylintDisplayRefactorAction"
-                    class="com.leinardi.pycharm.pylint.actions.DisplayRefactor"
+                    class="com.lukaspiatkowski.pycharm.pylint.actions.DisplayRefactor"
                     text="Display Refactor"
                     description="Display Refactor results"
                     icon="/actions/forceRefresh.png"/>
 
             <action id="PylintDisplayInfoAction"
-                    class="com.leinardi.pycharm.pylint.actions.DisplayInfo"
+                    class="com.lukaspiatkowski.pycharm.pylint.actions.DisplayInfo"
                     text="Display Info"
                     description="Display info results"
                     icon="/general/information.png"/>
@@ -112,7 +112,7 @@
             <separator/>
 
             <action id="PylintClearAllAction"
-                    class="com.leinardi.pycharm.pylint.actions.ClearAll"
+                    class="com.lukaspiatkowski.pycharm.pylint.actions.ClearAll"
                     text="Clear All"
                     description="Clear all elements in the tool window"
                     icon="/actions/gc.png"/>
@@ -121,13 +121,13 @@
 
         <group id="PylintPluginActions" text="Prospector" popup="true">
             <action id="PylintCloseAction"
-                    class="com.leinardi.pycharm.pylint.actions.Close"
+                    class="com.lukaspiatkowski.pycharm.pylint.actions.Close"
                     text="Close Prospector Window"
                     description="Close the Prospector tool window"
                     icon="/actions/cancel.png"/>
 
             <action id="PylintStopCheck"
-                    class="com.leinardi.pycharm.pylint.actions.StopCheck"
+                    class="com.lukaspiatkowski.pycharm.pylint.actions.StopCheck"
                     text="Stop the running scan"
                     description="Stop the scan currently being run"
                     icon="/actions/suspend.png">
@@ -136,7 +136,7 @@
             <separator/>
 
             <action id="PylintCurrentFileAction"
-                    class="com.leinardi.pycharm.pylint.actions.ScanCurrentFile"
+                    class="com.lukaspiatkowski.pycharm.pylint.actions.ScanCurrentFile"
                     text="Check Current File"
                     description="Run Prospector on the current file in the editor"
                     icon="/actions/execute.png">
@@ -145,28 +145,28 @@
             </action>
 
             <action id="PylintModuleFilesAction"
-                    class="com.leinardi.pycharm.pylint.actions.ScanModule"
+                    class="com.lukaspiatkowski.pycharm.pylint.actions.ScanModule"
                     text="Check Module"
                     description="Run Prospector on all files in the current module"
                     icon="/nodes/ideaModule.png">
             </action>
 
             <action id="PylintProjectFilesAction"
-                    class="com.leinardi.pycharm.pylint.actions.ScanProject"
+                    class="com.lukaspiatkowski.pycharm.pylint.actions.ScanProject"
                     text="Check Project"
                     description="Run Prospector on all files in the current project"
                     icon="/nodes/ideaProject.png">
             </action>
 
             <action id="PylintModifiedFilesAction"
-                    class="com.leinardi.pycharm.pylint.actions.ScanModifiedFiles"
+                    class="com.lukaspiatkowski.pycharm.pylint.actions.ScanModifiedFiles"
                     text="Check All Modified Files"
                     description="Run Prospector on all modified files"
                     icon="/actions/listChanges.png">
             </action>
 
             <action id="PylintDefaultChangeListAction"
-                    class="com.leinardi.pycharm.pylint.actions.ScanCurrentChangeList"
+                    class="com.lukaspiatkowski.pycharm.pylint.actions.ScanCurrentChangeList"
                     text="Check Files in the Current Change List"
                     description="Run Prospector on the current change list"
                     icon="/vcs/patch.png">
@@ -175,7 +175,7 @@
             <separator/>
 
             <action id="PylintSettingsAction"
-                    class="com.leinardi.pycharm.pylint.actions.Settings"
+                    class="com.lukaspiatkowski.pycharm.pylint.actions.Settings"
                     text="Open Prospector Settings"
                     description="Open the Prospector settings window"
                     icon="/general/gearPlain.png"/>
