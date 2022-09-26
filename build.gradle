@@ -31,7 +31,7 @@ buildscript {
 }
 
 plugins {
-    id 'org.jetbrains.intellij' version '1.4.0'
+    id 'org.jetbrains.intellij' version '1.9.0'
     id 'net.ltgt.errorprone' version '2.0.2'
     id 'idea'
     id 'java'
@@ -148,6 +148,6 @@ task violationCommentsToGitHub(type: se.bjurr.violations.comments.github.plugin.
 }
 
 wrapper {
-    gradleVersion = "7.4"
+    gradleVersion = "7.5.1"
     distributionType = Wrapper.DistributionType.ALL
 }
