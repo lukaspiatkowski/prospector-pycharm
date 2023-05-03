@@ -255,7 +255,7 @@ public class PylintRunner {
         injectEnvironmentVariables(project, cmd);
 
         if (!pylintrcPath.isEmpty()) {
-            cmd.addParameter("--profile-path");
+            cmd.addParameter("--profile");
             cmd.addParameter(pylintrcPath);
         }
 
