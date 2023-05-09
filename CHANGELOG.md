@@ -1,5 +1,7 @@
 **[0.3.0] 2023-05-09**
 - Rebase onto Pylint 0.15.0 changes
+- Fix many random issues
+- Remove the UI for configuration, modify the .idea/prospector.xml directly configs are: customProspectorPath, customProspectorPath, customProspectorPath, customProspectorPath, customProspectorPath
 
 **[0.2.0] 2022-09-26**
 - Path to config to be provided as --profile (not --profile-path)
