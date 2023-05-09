@@ -83,24 +83,26 @@ public class ProcessResultsThread implements ThrowableRunnable<RuntimeException>
     public void run() {
         final Map<PsiFile, List<Integer>> lineLengthCachesByFile = new HashMap<>();
 
-        for (final Issue event : errors) {
-            final PsiFile psiFile = fileNamesToPsiFiles.get(filenameFrom(event));
-            if (psiFile == null) {
-                LOG.info("Could not find mapping for file: " + event.getLocation().getPath() + " in " + fileNamesToPsiFiles);
-                return;
+        if (errors != null) {
+            for (final Issue event : errors) {
+                final PsiFile psiFile = fileNamesToPsiFiles.get(filenameFrom(event));
+                if (psiFile == null) {
+                    LOG.info("Could not find mapping for file: " + event.getLocation().getPath() + " in " + fileNamesToPsiFiles);
+                    continue;
+                }
+
+                List<Integer> lineLengthCache = lineLengthCachesByFile.get(psiFile);
+                if (lineLengthCache == null) {
+                    // we cache the offset of each line as it is created, so as to
+                    // avoid retreating ground we've already covered.
+                    lineLengthCache = new ArrayList<>();
+                    lineLengthCache.add(0); // line 1 is offset 0
+
+                    lineLengthCachesByFile.put(psiFile, lineLengthCache);
+                }
+
+                processEvent(psiFile, lineLengthCache, event);
             }
-
-            List<Integer> lineLengthCache = lineLengthCachesByFile.get(psiFile);
-            if (lineLengthCache == null) {
-                // we cache the offset of each line as it is created, so as to
-                // avoid retreating ground we've already covered.
-                lineLengthCache = new ArrayList<>();
-                lineLengthCache.add(0); // line 1 is offset 0
-
-                lineLengthCachesByFile.put(psiFile, lineLengthCache);
-            }
-
-            processEvent(psiFile, lineLengthCache, event);
         }
     }
 

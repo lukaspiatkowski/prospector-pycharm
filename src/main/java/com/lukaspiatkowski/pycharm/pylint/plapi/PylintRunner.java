@@ -181,7 +181,7 @@ public class PylintRunner {
         return true;
     }
 
-    private static String getPylintrcFile(Project project, String pylintrcPath) throws PylintPluginException {
+    private static String getPathInProject(Project project, String pylintrcPath, boolean isFile) throws PylintPluginException {
         String absolutePath = new File(pylintrcPath).getAbsolutePath();
         if (pylintrcPath.isEmpty()) {
             return "";
@@ -189,9 +189,11 @@ public class PylintRunner {
             pylintrcPath = project.getBasePath() + File.separator + pylintrcPath;
         }
 
-        VirtualFile pylintrcFile = LocalFileSystem.getInstance().findFileByPath(pylintrcPath);
-        if (pylintrcFile == null || !pylintrcFile.exists()) {
-            throw new PylintPluginException(".prospector.yaml file is not valid. File does not exist or can't be read.");
+        if (isFile) {
+            VirtualFile pylintrcFile = LocalFileSystem.getInstance().findFileByPath(pylintrcPath);
+            if (pylintrcFile == null || !pylintrcFile.exists()) {
+                throw new PylintPluginException(pylintrcPath + " file is not valid. File does not exist or can't be read.");
+            }
         }
 
         return pylintrcPath;
@@ -226,9 +228,21 @@ public class PylintRunner {
         }
     }
 
+    public static String baseDir(Project project) {
+        PylintConfigService pylintConfigService = PylintConfigService.getInstance(project);
+        String prospectorWorkDir = pylintConfigService.getProspectorWorkDir();
+        if (!prospectorWorkDir.isEmpty()) {
+            return getPathInProject(project, prospectorWorkDir, false);
+        } else {
+            return project.getBasePath();
+        }
+    }
+
     public static JsonOutput scan(Project project, Set<String> filesToScan) throws InterruptedIOException,
             InterruptedException {
+        LOG.info("Running prospector plugin");
         if (!checkPylintAvailable(project, true)) {
+            LOG.info("prospector not available");
             return new JsonOutput();
         }
         PylintConfigService pylintConfigService = PylintConfigService.getInstance(project);
@@ -244,9 +258,14 @@ public class PylintRunner {
             throw new PylintToolException("Path to Prospector executable not set (check Plugin Settings)");
         }
 
-        String pylintrcPath = getPylintrcFile(project, pylintConfigService.getProspectorConfigPath());
+        String pylintrcPath = getPathInProject(project, pylintConfigService.getProspectorConfigPath(), true);
 
         GeneralCommandLine cmd = getPylintCommandLine(project, pylintPath);
+
+        String pythonPath = pylintConfigService.getPythonPath();
+        if (!pythonPath.isEmpty()) {
+            cmd.withEnvironment("PYTHONPATH", pythonPath);
+        }
 
         cmd.setCharset(UTF_8);
         cmd.addParameter("-o");
@@ -266,7 +285,8 @@ public class PylintRunner {
             cmd.addParameter(file);
         }
 
-        cmd.setWorkDirectory(project.getBasePath());
+        cmd.setWorkDirectory(baseDir(project));
+
         final Process process;
 
         try {
@@ -278,8 +298,12 @@ public class PylintRunner {
             JsonOutput jsonOutput;
             if (checkIfInputStreamIsEmpty(inputStream)) {
                 jsonOutput = new JsonOutput();
+
+                LOG.info("Found no issues running (CWD = " + cmd.getWorkDirectory() + " PYTHONPATH = " + cmd.getEnvironment().getOrDefault("PYTHONPATH", "") + "): " + cmd.getCommandLineString());
             } else {
                 jsonOutput = adapter.fromJson(Okio.buffer(Okio.source(inputStream)));
+
+                LOG.info("Found issues running (CWD = " + cmd.getWorkDirectory() + " PYTHONPATH = " + cmd.getEnvironment().getOrDefault("PYTHONPATH", "") + "): " + cmd.getCommandLineString());
             }
             process.waitFor();
 

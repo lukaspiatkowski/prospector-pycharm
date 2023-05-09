@@ -107,7 +107,7 @@ public class ScanFiles implements Callable<Map<PsiFile, List<Problem>>> {
             throws InterruptedIOException, InterruptedException {
         Map<String, PsiFile> fileNamesToPsiFiles = mapFilesToElements(filesToScan);
         JsonOutput errors = PylintRunner.scan(plugin.getProject(), fileNamesToPsiFiles.keySet());
-        String baseDir = plugin.getProject().getBasePath();
+        String baseDir = PylintRunner.baseDir(plugin.getProject());
         int tabWidth = 4;
         final ProcessResultsThread findThread = new ProcessResultsThread(false, tabWidth, baseDir,
                 errors.getIssues(), fileNamesToPsiFiles);

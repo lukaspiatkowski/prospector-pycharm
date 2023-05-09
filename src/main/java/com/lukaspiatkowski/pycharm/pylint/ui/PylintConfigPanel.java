@@ -35,97 +35,15 @@ import java.awt.event.ActionEvent;
 
 public class PylintConfigPanel {
     private JPanel rootPanel;
-    private JButton testButton;
-    private com.intellij.openapi.ui.TextFieldWithBrowseButton pylintPathField;
-    private com.intellij.openapi.ui.TextFieldWithBrowseButton pylintrcPathField;
-    private JBTextField argumentsField;
-    private Project project;
 
     public PylintConfigPanel(Project project) {
-        this.project = project;
-        PylintConfigService pylintConfigService = PylintConfigService.getInstance(project);
-        if (pylintConfigService == null) {
-            throw new IllegalStateException("PylintConfigService is null");
-        }
-        testButton.setAction(new TestAction());
-        pylintPathField.setText(pylintConfigService.getCustomProspectorPath());
-        FileChooserDescriptor fileChooserDescriptor = new FileChooserDescriptor(
-                true, false, false, false, false, false);
-        pylintPathField.addBrowseFolderListener(
-                "",
-                PylintBundle.message("config.pylint.path.tooltip"),
-                null,
-                fileChooserDescriptor,
-                TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT);
-        pylintrcPathField.setText(pylintConfigService.getProspectorConfigPath());
-        pylintrcPathField.addBrowseFolderListener(
-                "",
-                PylintBundle.message("config.pylintrc.path.tooltip"),
-                null,
-                fileChooserDescriptor,
-                TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT);
-        argumentsField.setText(pylintConfigService.getProspectorArguments());
-        argumentsField.getEmptyText().setText(PylintBundle.message("config.optional"));
     }
 
     public JPanel getPanel() {
         return rootPanel;
     }
 
-    public String getPylintPath() {
-        return getPylintPath(false);
-    }
-
-    public String getPylintPath(boolean autodetect) {
-        String path = pylintPathField.getText();
-        if (path.isEmpty() && autodetect) {
-            return PylintRunner.getPylintPath(project, false);
-        }
-        return path;
-    }
-
-    public String getPylintrcPath() {
-        return pylintrcPathField.getText();
-    }
-
-    public String getPylintArguments() {
-        return argumentsField.getText();
-    }
-
     @SuppressWarnings("unused")
     private void createUIComponents() {
-        JBTextField autodetectTextField = new JBTextField();
-        autodetectTextField.getEmptyText()
-                .setText(PylintBundle.message("config.auto-detect", PylintRunner.getPylintPath(project, false)));
-        pylintPathField = new TextFieldWithBrowseButton(autodetectTextField);
-        JBTextField optionalTextField = new JBTextField();
-        optionalTextField.getEmptyText().setText(PylintBundle.message("config.optional"));
-        pylintrcPathField = new TextFieldWithBrowseButton(optionalTextField);
-    }
-
-    private final class TestAction extends AbstractAction {
-
-        TestAction() {
-            putValue(Action.NAME, PylintBundle.message(
-                    "config.pylint.path.test"));
-        }
-
-        @Override
-        public void actionPerformed(final ActionEvent e) {
-            String pathToPylint = getPylintPath(true);
-            if (PylintRunner.isPylintPathValid(pathToPylint, project)) {
-                testButton.setIcon(Icons.icon("/general/inspectionsOK.png"));
-                Notifications.showInfo(
-                        project,
-                        PylintBundle.message("config.pylint.path.success.message")
-                );
-            } else {
-                testButton.setIcon(Icons.icon("/general/error.png"));
-                Notifications.showError(
-                        project,
-                        PylintBundle.message("config.pylint.path.failure.message", pathToPylint)
-                );
-            }
-        }
     }
 }

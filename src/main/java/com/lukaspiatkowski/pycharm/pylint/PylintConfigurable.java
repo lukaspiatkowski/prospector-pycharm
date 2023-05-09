@@ -29,10 +29,7 @@ import javax.swing.JComponent;
  * dialog. Registered in {@code plugin.xml} as a {@code projectConfigurable} extension.
  */
 public class PylintConfigurable implements Configurable {
-    private static final Logger LOG = Logger.getInstance(PylintConfigurable.class);
-
     private final PylintConfigPanel configPanel;
-    private final PylintConfigService pylintConfigService;
 
     public PylintConfigurable(@NotNull final Project project) {
         this(project, new PylintConfigPanel(project));
@@ -41,7 +38,6 @@ public class PylintConfigurable implements Configurable {
     PylintConfigurable(@NotNull final Project project,
                        @NotNull final PylintConfigPanel configPanel) {
         this.configPanel = configPanel;
-        pylintConfigService = PylintConfigService.getInstance(project);
     }
 
     @Override
@@ -66,20 +62,11 @@ public class PylintConfigurable implements Configurable {
 
     @Override
     public boolean isModified() {
-        boolean result = !configPanel.getPylintPath().equals(pylintConfigService.getCustomProspectorPath())
-                || !configPanel.getPylintrcPath().equals(pylintConfigService.getProspectorConfigPath())
-                || !configPanel.getPylintArguments().equals(pylintConfigService.getProspectorArguments());
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Has config changed? " + result);
-        }
-        return result;
+        return false;
     }
 
     @Override
     public void apply() {
-        pylintConfigService.setCustomProspectorPath(configPanel.getPylintPath());
-        pylintConfigService.setProspectorConfigPath(configPanel.getPylintrcPath());
-        pylintConfigService.setProspectorArguments(configPanel.getPylintArguments());
     }
 
     @Override

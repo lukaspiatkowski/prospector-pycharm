@@ -30,11 +30,15 @@ public class PylintConfigService implements PersistentStateComponent<PylintConfi
         customProspectorPath = "";
         prospectorArguments = "";
         prospectorConfigPath = "";
+        prospectorWorkDir = "";
+        pythonPath = "";
         scanBeforeCheckin = true;
     }
 
     private String customProspectorPath;
     private String prospectorConfigPath;
+    private String prospectorWorkDir;
+    private String pythonPath;
     private String prospectorArguments;
     private boolean scanBeforeCheckin;
 
@@ -52,6 +56,22 @@ public class PylintConfigService implements PersistentStateComponent<PylintConfi
 
     public void setProspectorConfigPath(String pathToProspectorConfigFile) {
         this.prospectorConfigPath = pathToProspectorConfigFile;
+    }
+
+    public String getProspectorWorkDir() {
+        return prospectorWorkDir;
+    }
+
+    public void setProspectorWorkDir(String pathToProspectorWorkDir) {
+        this.prospectorWorkDir = pathToProspectorWorkDir;
+    }
+
+    public String getPythonPath() {
+        return pythonPath;
+    }
+
+    public void setPythonPath(String pythonPathValue) {
+        this.pythonPath = pythonPathValue;
     }
 
     public String getProspectorArguments() {

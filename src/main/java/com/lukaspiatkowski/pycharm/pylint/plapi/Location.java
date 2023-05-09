@@ -19,9 +19,9 @@ public class Location {
     @Json(name = "function")
     private String function;
     @Json(name = "line")
-    private int line;
+    private Integer line;
     @Json(name = "character")
-    private int character;
+    private Integer character;
 
     public String getPath() {
         return path;
@@ -47,19 +47,19 @@ public class Location {
         this.function = function;
     }
 
-    public int getLine() {
+    public Integer getLine() {
         return line;
     }
 
-    public void setLine(int line) {
+    public void setLine(Integer line) {
         this.line = line;
     }
 
-    public int getCharacter() {
+    public Integer getCharacter() {
         return character;
     }
 
-    public void setCharacter(int character) {
+    public void setCharacter(Integer character) {
         this.character = character;
     }
 
